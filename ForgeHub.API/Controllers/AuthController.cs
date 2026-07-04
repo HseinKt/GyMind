@@ -72,6 +72,11 @@ public class AuthController : ControllerBase
             return BadRequest(new { message = "Enter the phone, WhatsApp number, or email linked to your account." });
         }
 
+        if (dto.Identifier.Contains("@") && !System.Text.RegularExpressions.Regex.IsMatch(dto.Identifier, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+        {
+            return BadRequest(new { message = "Invalid email format." });
+        }
+
         var resetToken = Convert.ToHexString(RandomNumberGenerator.GetBytes(24)).ToLowerInvariant();
         var user = await FindMemberUserByIdentifier(dto.Identifier);
         if (user != null)
@@ -117,9 +122,9 @@ public class AuthController : ControllerBase
     [AllowAnonymous]
     public async Task<IActionResult> ResetForgottenPassword([FromBody] ForgotPasswordResetDto dto)
     {
-        if (dto == null || string.IsNullOrWhiteSpace(dto.NewPassword) || dto.NewPassword.Length < 8)
+        if (dto == null || string.IsNullOrWhiteSpace(dto.NewPassword) || !ForgeHub.API.Helpers.PasswordValidator.IsStrongPassword(dto.NewPassword))
         {
-            return BadRequest(new { message = "Use a new password with at least 8 characters." });
+            return BadRequest(new { message = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
         }
 
         var record = await GetValidPasswordResetRecord(dto);
@@ -203,9 +208,9 @@ public class AuthController : ControllerBase
     [Authorize(Roles = AppRoles.Member)]
     public async Task<IActionResult> ChangeMemberPassword([FromBody] ChangePasswordDto dto)
     {
-        if (dto == null || string.IsNullOrWhiteSpace(dto.CurrentPassword) || string.IsNullOrWhiteSpace(dto.NewPassword) || dto.NewPassword.Length < 8)
+        if (dto == null || string.IsNullOrWhiteSpace(dto.CurrentPassword) || string.IsNullOrWhiteSpace(dto.NewPassword) || !ForgeHub.API.Helpers.PasswordValidator.IsStrongPassword(dto.NewPassword))
         {
-            return BadRequest(new { message = "Enter your current password and a new password with at least 8 characters." });
+            return BadRequest(new { message = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
         }
 
         var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);

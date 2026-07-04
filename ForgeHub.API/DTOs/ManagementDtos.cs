@@ -12,10 +12,18 @@ public class CreateUserRequest
     public long RoleId { get; set; }
     [Required]
     public string FullName { get; set; } = string.Empty;
-    [Required, EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    
+    private string _email = string.Empty;
+    [Required]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant() ?? string.Empty;
+    }
     public string? Phone { get; set; }
     [Required]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
     public string Password { get; set; } = string.Empty;
     public bool IsActive { get; set; } = true;
 }
@@ -27,8 +35,15 @@ public class UpdateUserRequest
     public long RoleId { get; set; }
     [Required]
     public string FullName { get; set; } = string.Empty;
-    [Required, EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    
+    private string _email = string.Empty;
+    [Required]
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant() ?? string.Empty;
+    }
     public string? Phone { get; set; }
     public bool IsActive { get; set; } = true;
 }
@@ -95,8 +110,16 @@ public class CreateMemberRequest
     public string? Gender { get; set; }
     public DateOnly? Dob { get; set; }
     public string? Phone { get; set; }
-    [EmailAddress]
-    public string? Email { get; set; }
+    
+    private string? _email;
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string? Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant();
+    }
+
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
     public string? Password { get; set; }
     public string? QrCode { get; set; }
     public DateOnly? JoinDate { get; set; }

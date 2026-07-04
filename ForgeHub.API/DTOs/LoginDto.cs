@@ -4,9 +4,15 @@ namespace ForgeHub.API.DTOs;
 
 public class LoginDto
 {
+    private string _email = string.Empty;
+
     [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant() ?? string.Empty;
+    }
     
     [Required]
     public string Password { get; set; } = string.Empty;
@@ -17,9 +23,15 @@ public class LoginDto
 
 public class AdminLoginDto
 {
+    private string _email = string.Empty;
+
     [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant() ?? string.Empty;
+    }
 
     [Required]
     public string Password { get; set; } = string.Empty;
@@ -27,8 +39,24 @@ public class AdminLoginDto
 
 public class MemberLoginDto
 {
+    private string _identifier = string.Empty;
+
     [Required]
-    public string Identifier { get; set; } = string.Empty;
+    public string Identifier
+    {
+        get => _identifier;
+        set
+        {
+            if (value != null && value.Contains("@"))
+            {
+                _identifier = value.Replace(" ", "").ToLowerInvariant();
+            }
+            else
+            {
+                _identifier = value?.Trim() ?? string.Empty;
+            }
+        }
+    }
 
     public string? Email { get; set; }
     public string? Phone { get; set; }
@@ -49,11 +77,18 @@ public class RegisterDto
     [Required]
     public string FullName { get; set; } = string.Empty;
     
+    private string _email = string.Empty;
+
     [Required]
-    [EmailAddress]
-    public string Email { get; set; } = string.Empty;
+    [RegularExpression(@"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$", ErrorMessage = "Invalid email format.")]
+    public string Email
+    {
+        get => _email;
+        set => _email = value?.Replace(" ", "").ToLowerInvariant() ?? string.Empty;
+    }
     
     [Required]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
     public string Password { get; set; } = string.Empty;
     
     [Required]
@@ -108,8 +143,24 @@ public class RefreshSessionDto
 
 public class ForgotPasswordRequestDto
 {
+    private string _identifier = string.Empty;
+
     [Required]
-    public string Identifier { get; set; } = string.Empty;
+    public string Identifier
+    {
+        get => _identifier;
+        set
+        {
+            if (value != null && value.Contains("@"))
+            {
+                _identifier = value.Replace(" ", "").ToLowerInvariant();
+            }
+            else
+            {
+                _identifier = value?.Trim() ?? string.Empty;
+            }
+        }
+    }
 }
 
 public class ForgotPasswordVerifyDto
@@ -127,7 +178,7 @@ public class ForgotPasswordVerifyDto
 public class ForgotPasswordResetDto : ForgotPasswordVerifyDto
 {
     [Required]
-    [MinLength(8)]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
     public string NewPassword { get; set; } = string.Empty;
 }
 
@@ -137,7 +188,7 @@ public class ChangePasswordDto
     public string CurrentPassword { get; set; } = string.Empty;
 
     [Required]
-    [MinLength(8)]
+    [RegularExpression(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$", ErrorMessage = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.")]
     public string NewPassword { get; set; } = string.Empty;
 }
 

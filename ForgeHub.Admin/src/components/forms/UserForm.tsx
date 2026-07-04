@@ -142,8 +142,25 @@ export function UserForm({
   async function submit(values: UserFormValues) {
     const nextFieldErrors: Partial<Record<"fullName" | "email" | "password", string>> = {};
     if (!values.fullName?.trim()) nextFieldErrors.fullName = "Full name is required.";
-    if (!values.email?.trim()) nextFieldErrors.email = "Email is required.";
-    if (requirePassword && !values.password?.trim()) nextFieldErrors.password = "Password is required.";
+    
+    const cleanEmail = values.email ? values.email.replace(/\s+/g, "").toLowerCase() : "";
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!cleanEmail) {
+      nextFieldErrors.email = "Email is required.";
+    } else if (!emailRegex.test(cleanEmail)) {
+      nextFieldErrors.email = "Invalid email format.";
+    }
+
+    if (requirePassword) {
+      if (!values.password?.trim()) {
+        nextFieldErrors.password = "Password is required.";
+      } else {
+        const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!passwordRegex.test(values.password)) {
+          nextFieldErrors.password = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.";
+        }
+      }
+    }
 
     if (Object.keys(nextFieldErrors).length) {
       setFieldErrors(nextFieldErrors);
@@ -162,6 +179,7 @@ export function UserForm({
 
     const payload: UserFormValues = {
       ...values,
+      email: cleanEmail,
       roleId: fixedRole?.id ?? values.roleId,
       gymId: lockedGymId ?? selectedGymId,
       branchId: hideBranch ? undefined : selectedBranchId,

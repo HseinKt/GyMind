@@ -316,9 +316,9 @@ public class MembersController : ControllerBase
                 return BadRequest(new { message = "Email is required." });
             }
 
-            if (string.IsNullOrWhiteSpace(request.Password) || request.Password.Length < 8)
+            if (string.IsNullOrWhiteSpace(request.Password) || !ForgeHub.API.Helpers.PasswordValidator.IsStrongPassword(request.Password))
             {
-                return BadRequest(new { message = "Password must be at least 8 characters." });
+                return BadRequest(new { message = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
             }
 
             var email = request.Email.Trim().ToLowerInvariant();

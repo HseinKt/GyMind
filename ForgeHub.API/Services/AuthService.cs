@@ -44,6 +44,12 @@ public class AuthService : IAuthService
         var identifier = !string.IsNullOrWhiteSpace(dto.Identifier)
             ? dto.Identifier.Trim()
             : (dto.Email ?? dto.Phone ?? string.Empty).Trim();
+        
+        if (identifier.Contains("@") && !System.Text.RegularExpressions.Regex.IsMatch(identifier, @"^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"))
+        {
+            throw new UnauthorizedAccessException("Invalid email format.");
+        }
+
         var normalizedIdentifier = identifier.ToLowerInvariant();
         var normalizedEmail = string.IsNullOrWhiteSpace(dto.Email) ? null : dto.Email.Trim().ToLowerInvariant();
         var phone = string.IsNullOrWhiteSpace(dto.Phone) ? null : dto.Phone.Trim();

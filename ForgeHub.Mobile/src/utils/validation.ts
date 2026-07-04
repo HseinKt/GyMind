@@ -20,21 +20,51 @@ const weightSchema = z.preprocess((value) => {
 
 const phone = z.string().trim().optional().refine((value) => !value || /^\+?[0-9\s().-]{7,20}$/.test(value), "Enter a valid phone number (7 to 20 digits).");
 
+const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+const cleanIdentifier = (val: string) => {
+  if (val.includes("@")) {
+    return val.replace(/\s+/g, "").toLowerCase();
+  }
+  return val.trim();
+};
+
 export const loginSchema = z.object({
-  identifier: z.string().trim().min(3, "Enter your email or phone."),
+  identifier: z.string().min(3, "Enter your email or phone.")
+    .transform(cleanIdentifier)
+    .refine((val) => {
+      if (val.includes("@") || !/^\+?[0-9\s().-]{7,20}$/.test(val)) {
+        return emailRegex.test(val);
+      }
+      return true;
+    }, "Enter a valid email address or phone number."),
   password: z.string().min(1, "Enter your password.")
 });
 
 export const forgotPasswordSchema = z.object({
-  identifier: z.string().trim().min(3, "Enter your phone, WhatsApp number, or email.")
+  identifier: z.string().min(3, "Enter your phone, WhatsApp number, or email.")
+    .transform(cleanIdentifier)
+    .refine((val) => {
+      if (val.includes("@") || !/^\+?[0-9\s().-]{7,20}$/.test(val)) {
+        return emailRegex.test(val);
+      }
+      return true;
+    }, "Enter a valid email address or phone number.")
 });
 
 export const otpSchema = z.object({
   otp: z.string().trim().min(4, "Enter the OTP code.")
 });
 
+const passwordSchema = z.string()
+  .min(8, "Password must be at least 8 characters.")
+  .refine((val) => /[A-Z]/.test(val), "Password must contain at least one uppercase letter.")
+  .refine((val) => /[a-z]/.test(val), "Password must contain at least one lowercase letter.")
+  .refine((val) => /\d/.test(val), "Password must contain at least one number.")
+  .refine((val) => /[\W_]/.test(val), "Password must contain at least one special character.");
+
 const passwordPairSchema = z.object({
-  newPassword: z.string().min(8, "Use at least 8 characters."),
+  newPassword: passwordSchema,
   confirmPassword: z.string().min(1, "Confirm your new password.")
 }).refine((value) => value.newPassword === value.confirmPassword, {
   path: ["confirmPassword"],
@@ -45,7 +75,7 @@ export const resetPasswordSchema = passwordPairSchema;
 
 export const changePasswordSchema = z.object({
   currentPassword: z.string().min(1, "Enter your current password."),
-  newPassword: z.string().min(8, "Use at least 8 characters."),
+  newPassword: passwordSchema,
   confirmPassword: z.string().min(1, "Confirm your new password.")
 }).refine((value) => value.newPassword === value.confirmPassword, {
   path: ["confirmPassword"],

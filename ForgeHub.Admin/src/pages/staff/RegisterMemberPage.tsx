@@ -69,8 +69,17 @@ export function RegisterMemberPage() {
     setCreatedMember(null);
 
     try {
-      if (!form.email.trim()) throw new Error("Email is required.");
-      if (form.password.length < 8) throw new Error("Password must be at least 8 characters.");
+      const cleanEmail = form.email.replace(/\s+/g, "").toLowerCase();
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(cleanEmail)) {
+        throw new Error("Invalid email format.");
+      }
+
+      const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+      if (!passwordRegex.test(form.password)) {
+        throw new Error("Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character.");
+      }
+
       if (!form.membershipPlanId || !selectedPlan) throw new Error("Select a membership plan.");
 
       const amount = form.paymentAmount === "" ? undefined : Number(form.paymentAmount);
@@ -87,7 +96,7 @@ export function RegisterMemberPage() {
         gender: form.gender || undefined,
         dob: form.dob || undefined,
         phone: form.phone || undefined,
-        email: form.email,
+        email: cleanEmail,
         password: form.password,
         joinDate: todayIso(),
         isActive: true

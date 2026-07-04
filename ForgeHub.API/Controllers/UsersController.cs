@@ -184,6 +184,11 @@ public class UsersController : ControllerBase
                 return BadRequest(new { message = "Invalid gym or branch scope." });
             }
 
+            if (string.IsNullOrWhiteSpace(request.Password) || !ForgeHub.API.Helpers.PasswordValidator.IsStrongPassword(request.Password))
+            {
+                return BadRequest(new { message = "Password must be at least 8 characters long and contain at least one uppercase letter, one lowercase letter, one number, and one special character." });
+            }
+
             var user = new User
             {
                 GymId = scopedGymId,

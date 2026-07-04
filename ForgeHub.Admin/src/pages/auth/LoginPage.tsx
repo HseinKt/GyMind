@@ -21,7 +21,13 @@ export function LoginPage() {
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError("");
-    const result = await login(email.trim().toLowerCase(), password);
+    const cleanEmail = email.replace(/\s+/g, "").toLowerCase();
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(cleanEmail)) {
+      setError("Invalid email format.");
+      return;
+    }
+    const result = await login(cleanEmail, password);
     if (!result.ok) {
       setError(result.message ?? "Login failed.");
     }

@@ -31,7 +31,10 @@ export function LoginScreen() {
   const onSubmit = handleSubmit(async (values) => {
     setAuthError(null);
     try {
-      const response = await login(values.identifier, values.password);
+      const cleanIdentifier = values.identifier.includes("@")
+        ? values.identifier.replace(/\s+/g, "").toLowerCase()
+        : values.identifier.trim();
+      const response = await login(cleanIdentifier, values.password);
       await applyLogin(response);
       if (response.role === "Member") router.replace("/tabs/home");
     } catch (error) {
@@ -92,8 +95,11 @@ function ForgotPasswordModal({ open, onClose }: { open: boolean; onClose: () => 
   const requestOtp = requestForm.handleSubmit(async (values) => {
     setError(null);
     try {
-      const response = await requestPasswordOtp(values.identifier);
-      setIdentifier(values.identifier);
+      const cleanIdentifier = values.identifier.includes("@")
+        ? values.identifier.replace(/\s+/g, "").toLowerCase()
+        : values.identifier.trim();
+      const response = await requestPasswordOtp(cleanIdentifier);
+      setIdentifier(cleanIdentifier);
       setResetToken(response.resetToken);
       setMessage(response.message);
       setStep(2);
