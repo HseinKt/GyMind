@@ -19,11 +19,13 @@ public class AuthService : IAuthService
 {
     private readonly ApplicationDbContext _context;
     private readonly JwtHelper _jwtHelper;
+    private readonly ILogger<AuthService> _logger;
 
-    public AuthService(ApplicationDbContext context, JwtHelper jwtHelper)
+    public AuthService(ApplicationDbContext context, JwtHelper jwtHelper, ILogger<AuthService> logger)
     {
         _context = context;
         _jwtHelper = jwtHelper;
+        _logger = logger;
     }
 
     public async Task<AuthResponseDto> LoginAdminAsync(AdminLoginDto dto)
@@ -55,8 +57,7 @@ public class AuthService : IAuthService
         var phone = string.IsNullOrWhiteSpace(dto.Phone) ? null : dto.Phone.Trim();
 
         var user = await _context.Users
-            .Include(item => item.Role)
-            .Include(item => item.Gym)
+            .Select(AuthUserProjection())
             .FirstOrDefaultAsync(item =>
                 (item.Email != null && item.Email.ToLower() == normalizedIdentifier) ||
                 item.Phone == identifier ||
@@ -85,11 +86,10 @@ public class AuthService : IAuthService
         }
 
         var user = await _context.Users
-            .Include(item => item.Role)
-            .Include(item => item.Gym)
+            .Select(AuthUserProjection())
             .FirstOrDefaultAsync(item => item.Id == session.UserId);
 
-        if (user?.Role == null || !user.IsActive || (user.GymId.HasValue && user.Gym != null && !user.Gym.IsActive))
+        if (user?.Role == null || !user.IsActive)
         {
             throw new UnauthorizedAccessException("User session is no longer active.");
         }
@@ -121,8 +121,7 @@ public class AuthService : IAuthService
     {
         var normalizedEmail = email.Trim().ToLowerInvariant();
         var user = await _context.Users
-            .Include(item => item.Role)
-            .Include(item => item.Gym)
+            .Select(AuthUserProjection())
             .FirstOrDefaultAsync(item => item.Email != null && item.Email.ToLower() == normalizedEmail);
 
         if (user?.Role == null)
@@ -160,10 +159,6 @@ public class AuthService : IAuthService
             throw new UnauthorizedAccessException("Account is deactivated.");
         }
 
-        if (user.GymId.HasValue && user.Gym != null && !user.Gym.IsActive)
-        {
-            throw new UnauthorizedAccessException("Your gym account is deactivated. Please contact support.");
-        }
     }
 
     private async Task<AuthResponseDto> IssueSessionAsync(User user, Role role)
@@ -171,7 +166,14 @@ public class AuthService : IAuthService
         var refreshToken = Convert.ToBase64String(Guid.NewGuid().ToByteArray()) + Guid.NewGuid().ToString("N");
         var expiresAt = DateTime.UtcNow.AddHours(24);
         var member = string.Equals(role.Name, AppRoles.Member, StringComparison.OrdinalIgnoreCase)
-            ? await _context.Members.FirstOrDefaultAsync(item => item.UserId == user.Id)
+            ? await _context.Members
+                .Where(item => item.UserId == user.Id)
+                .Select(item => new Member
+                {
+                    Id = item.Id,
+                    HomeBranchId = item.HomeBranchId
+                })
+                .FirstOrDefaultAsync()
             : null;
         var membershipStatus = member == null
             ? string.Empty
@@ -181,15 +183,25 @@ public class AuthService : IAuthService
                 .Select(item => item.Status ?? string.Empty)
                 .FirstOrDefaultAsync() ?? string.Empty;
 
-        _context.RefreshSessions.Add(new RefreshSession
+        var refreshSession = new RefreshSession
         {
             UserId = user.Id,
             RefreshToken = refreshToken,
             ExpiresAt = DateTime.UtcNow.AddDays(14),
             CreatedAt = DateTime.UtcNow
-        });
+        };
 
-        await _context.SaveChangesAsync();
+        _context.RefreshSessions.Add(refreshSession);
+
+        try
+        {
+            await _context.SaveChangesAsync();
+        }
+        catch (Exception ex) when (ex is DbUpdateException || ex is Npgsql.PostgresException)
+        {
+            _context.Entry(refreshSession).State = EntityState.Detached;
+            _logger.LogWarning(ex, "Could not persist refresh session; issuing access token without persisted refresh state.");
+        }
 
         return new AuthResponseDto
         {
@@ -221,5 +233,26 @@ public class AuthService : IAuthService
         AppRoles.Trainer => ["trainer:schedule", "trainer:members", "trainer:notes"],
         AppRoles.Member => ["member:profile", "member:membership", "member:booking", "member:attendance"],
         _ => []
+    };
+
+    private static System.Linq.Expressions.Expression<Func<User, User>> AuthUserProjection() => user => new User
+    {
+        Id = user.Id,
+        GymId = user.GymId,
+        BranchId = user.BranchId,
+        RoleId = user.RoleId,
+        FullName = user.FullName,
+        Email = user.Email,
+        Phone = user.Phone,
+        PasswordHash = user.PasswordHash,
+        IsActive = user.IsActive,
+        CreatedAt = user.CreatedAt,
+        Role = user.Role == null
+            ? null
+            : new Role
+            {
+                Id = user.Role.Id,
+                Name = user.Role.Name
+            }
     };
 }
