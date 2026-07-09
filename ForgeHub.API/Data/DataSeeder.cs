@@ -383,12 +383,17 @@ public static class DataSeeder
         {
             for (int i = 1; i <= 6; i++)
             {
+                var checkInTime = DateTime.UtcNow.AddDays(-i);
                 context.CheckIns.Add(new CheckIn
                 {
                     MemberId = member.Id,
                     BranchId = branch.Id,
-                    CheckInTime = DateTime.UtcNow.AddDays(-i),
-                    Method = "mobile-qr"
+                    CheckInTime = checkInTime,
+                    CheckOutTime = checkInTime.AddHours(2),
+                    LastSeenAt = checkInTime.AddHours(2),
+                    Status = AppStatuses.CheckInCheckedOut,
+                    Method = "mobile-qr",
+                    CheckOutMethod = "mobile-qr"
                 });
             }
 
