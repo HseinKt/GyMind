@@ -1,6 +1,6 @@
--- ForgeHub Supabase QA seed
+-- Gymind Supabase QA seed
 -- Paste this whole file into Supabase SQL Editor and run it against a dev/test database only.
--- Password for every qa.*@forgehub.test account: Test@123456
+-- Password for every qa.*@gymind.test account: Test@123456
 -- BCrypt hash generated for Test@123456:
 -- $2a$11$8WPV3sOk1fOQ3Vx0/7SFBOMG0ZjUnEOuMK64BSRTn.D.Y/eOvqigq
 
@@ -75,20 +75,20 @@ declare
   notification_id bigint;
 begin
   insert into public.gyms (name, city, is_active, created_at)
-  select 'ForgeHub Ablah Fitness', 'Ablah', true, now()
-  where not exists (select 1 from public.gyms where name = 'ForgeHub Ablah Fitness');
+  select 'Gymind Ablah Fitness', 'Ablah', true, now()
+  where not exists (select 1 from public.gyms where name = 'Gymind Ablah Fitness');
 
   insert into public.gyms (name, city, is_active, created_at)
-  select 'ForgeHub Local Gym', 'Ablah', true, now()
-  where not exists (select 1 from public.gyms where name = 'ForgeHub Local Gym');
+  select 'Gymind Local Gym', 'Ablah', true, now()
+  where not exists (select 1 from public.gyms where name = 'Gymind Local Gym');
 
   insert into public.gyms (name, city, is_active, created_at)
-  select 'ForgeHub Solo Gym', 'Ablah', true, now()
-  where not exists (select 1 from public.gyms where name = 'ForgeHub Solo Gym');
+  select 'Gymind Solo Gym', 'Ablah', true, now()
+  where not exists (select 1 from public.gyms where name = 'Gymind Solo Gym');
 
-  select id into gym1_id from public.gyms where name = 'ForgeHub Ablah Fitness';
-  select id into gym2_id from public.gyms where name = 'ForgeHub Local Gym';
-  select id into gym3_id from public.gyms where name = 'ForgeHub Solo Gym';
+  select id into gym1_id from public.gyms where name = 'Gymind Ablah Fitness';
+  select id into gym2_id from public.gyms where name = 'Gymind Local Gym';
+  select id into gym3_id from public.gyms where name = 'Gymind Solo Gym';
 
   insert into public.branches (gym_id, name, address, phone, range_km, capacity, area_sqm, lat, lng, open_time, close_time, qr_code_token, qr_code_created_at, qr_code_updated_at, qr_code_is_active, is_active)
   select gym1_id, 'Ablah Main Branch', 'Ablah, Bekaa, Lebanon', '70111001', 0.15, 120, 480, 33.8212, 35.9956, '06:00', '23:00', md5('QA_ABLAH_MAIN'), now(), now(), true, true
@@ -133,30 +133,30 @@ begin
   truncate table qa_user_seed;
 
   insert into qa_user_seed (email, full_name, phone, role_name, gym_id, branch_id) values
-    ('qa.superadmin@forgehub.test', 'QA Super Admin', '71900001', 'SuperAdmin', null, null),
-    ('qa.owner.ablahfitness@forgehub.test', 'QA Ablah Fitness Owner', '71900002', 'GymOwner', gym1_id, main_id),
-    ('qa.owner.localgym@forgehub.test', 'QA Local Gym Owner', '71900003', 'GymOwner', gym2_id, strength_id),
-    ('qa.owner.sologym@forgehub.test', 'QA Solo Gym Owner', '71900004', 'GymOwner', gym3_id, solo_id),
-    ('qa.manager.ablahmain@forgehub.test', 'QA Ablah Main Manager', '71900005', 'BranchManager', gym1_id, main_id),
-    ('qa.staff.ablahmain@forgehub.test', 'QA Ablah Main Staff', '71900006', 'Staff', gym1_id, main_id),
-    ('qa.trainer.elie@forgehub.test', 'Elie Haddad', '71900007', 'Trainer', gym1_id, main_id),
-    ('qa.trainer.marc@forgehub.test', 'Marc Khoury', '71900008', 'Trainer', gym1_id, east_id),
-    ('qa.trainer.rana@forgehub.test', 'Rana Nader', '71900009', 'Trainer', gym1_id, beirut_id),
-    ('qa.member.active.monthly@forgehub.test', 'Charbel Active Monthly', '71810001', 'Member', gym1_id, main_id),
-    ('qa.member.daypass@forgehub.test', 'Maya Daypass', '71810002', 'Member', gym1_id, main_id),
-    ('qa.member.3months@forgehub.test', 'Jad ThreeMonths', '71810003', 'Member', gym1_id, east_id),
-    ('qa.member.vip@forgehub.test', 'Lea VIP', '71810004', 'Member', gym1_id, main_id),
-    ('qa.member.expiring2days@forgehub.test', 'Karim Expiring Soon', '71810005', 'Member', gym1_id, main_id),
-    ('qa.member.expiringtomorrow@forgehub.test', 'Nour Expiring Tomorrow', '71810006', 'Member', gym1_id, main_id),
-    ('qa.member.expired@forgehub.test', 'Tony Expired', '71810007', 'Member', gym1_id, main_id),
-    ('qa.member.frozen@forgehub.test', 'Sarah Frozen', '71810008', 'Member', gym1_id, east_id),
-    ('qa.member.cancelled@forgehub.test', 'Rami Cancelled', '71810009', 'Member', gym1_id, main_id),
-    ('qa.member.noplan@forgehub.test', 'Hiba NoPlan', '71810010', 'Member', gym1_id, main_id),
-    ('qa.member.history@forgehub.test', 'Paul History', '71810011', 'Member', gym1_id, main_id),
-    ('qa.member.running@forgehub.test', 'Rita Running Timer', '71810012', 'Member', gym1_id, main_id),
-    ('qa.member.vip.beirut@forgehub.test', 'George VIP Beirut', '71810013', 'Member', gym1_id, beirut_id),
-    ('qa.member.gym2.monthly@forgehub.test', 'Maria GymTwo', '71810014', 'Member', gym2_id, strength_id),
-    ('qa.member.gym3.solo@forgehub.test', 'Sami Solo', '71810015', 'Member', gym3_id, solo_id);
+    ('qa.superadmin@gymind.test', 'QA Super Admin', '71900001', 'SuperAdmin', null, null),
+    ('qa.owner.ablahfitness@gymind.test', 'QA Ablah Fitness Owner', '71900002', 'GymOwner', gym1_id, main_id),
+    ('qa.owner.localgym@gymind.test', 'QA Local Gym Owner', '71900003', 'GymOwner', gym2_id, strength_id),
+    ('qa.owner.sologym@gymind.test', 'QA Solo Gym Owner', '71900004', 'GymOwner', gym3_id, solo_id),
+    ('qa.manager.ablahmain@gymind.test', 'QA Ablah Main Manager', '71900005', 'BranchManager', gym1_id, main_id),
+    ('qa.staff.ablahmain@gymind.test', 'QA Ablah Main Staff', '71900006', 'Staff', gym1_id, main_id),
+    ('qa.trainer.elie@gymind.test', 'Elie Haddad', '71900007', 'Trainer', gym1_id, main_id),
+    ('qa.trainer.marc@gymind.test', 'Marc Khoury', '71900008', 'Trainer', gym1_id, east_id),
+    ('qa.trainer.rana@gymind.test', 'Rana Nader', '71900009', 'Trainer', gym1_id, beirut_id),
+    ('qa.member.active.monthly@gymind.test', 'Charbel Active Monthly', '71810001', 'Member', gym1_id, main_id),
+    ('qa.member.daypass@gymind.test', 'Maya Daypass', '71810002', 'Member', gym1_id, main_id),
+    ('qa.member.3months@gymind.test', 'Jad ThreeMonths', '71810003', 'Member', gym1_id, east_id),
+    ('qa.member.vip@gymind.test', 'Lea VIP', '71810004', 'Member', gym1_id, main_id),
+    ('qa.member.expiring2days@gymind.test', 'Karim Expiring Soon', '71810005', 'Member', gym1_id, main_id),
+    ('qa.member.expiringtomorrow@gymind.test', 'Nour Expiring Tomorrow', '71810006', 'Member', gym1_id, main_id),
+    ('qa.member.expired@gymind.test', 'Tony Expired', '71810007', 'Member', gym1_id, main_id),
+    ('qa.member.frozen@gymind.test', 'Sarah Frozen', '71810008', 'Member', gym1_id, east_id),
+    ('qa.member.cancelled@gymind.test', 'Rami Cancelled', '71810009', 'Member', gym1_id, main_id),
+    ('qa.member.noplan@gymind.test', 'Hiba NoPlan', '71810010', 'Member', gym1_id, main_id),
+    ('qa.member.history@gymind.test', 'Paul History', '71810011', 'Member', gym1_id, main_id),
+    ('qa.member.running@gymind.test', 'Rita Running Timer', '71810012', 'Member', gym1_id, main_id),
+    ('qa.member.vip.beirut@gymind.test', 'George VIP Beirut', '71810013', 'Member', gym1_id, beirut_id),
+    ('qa.member.gym2.monthly@gymind.test', 'Maria GymTwo', '71810014', 'Member', gym2_id, strength_id),
+    ('qa.member.gym3.solo@gymind.test', 'Sami Solo', '71810015', 'Member', gym3_id, solo_id);
 
   insert into public.users (gym_id, branch_id, role_id, full_name, email, phone, password_hash, is_active, created_at)
   select s.gym_id, s.branch_id, r.id, s.full_name, s.email, s.phone, qa_password_hash, true, now()
@@ -176,7 +176,7 @@ begin
     order by id
     limit 1
   ) r on true
-  where s.email like 'qa.member.%@forgehub.test'
+  where s.email like 'qa.member.%@gymind.test'
     and not exists (select 1 from public.users u where u.email = s.email);
 
   update public.users u
@@ -208,15 +208,15 @@ begin
     limit 1
   ) r on true
   where u.email = s.email
-    and s.email like 'qa.member.%@forgehub.test';
+    and s.email like 'qa.member.%@gymind.test';
 
-  select id into owner1_id from public.users where email = 'qa.owner.ablahfitness@forgehub.test';
-  select id into owner2_id from public.users where email = 'qa.owner.localgym@forgehub.test';
-  select id into owner3_id from public.users where email = 'qa.owner.sologym@forgehub.test';
-  select id into staff_id from public.users where email = 'qa.staff.ablahmain@forgehub.test';
-  select id into trainer_elie_id from public.users where email = 'qa.trainer.elie@forgehub.test';
-  select id into trainer_marc_id from public.users where email = 'qa.trainer.marc@forgehub.test';
-  select id into trainer_rana_id from public.users where email = 'qa.trainer.rana@forgehub.test';
+  select id into owner1_id from public.users where email = 'qa.owner.ablahfitness@gymind.test';
+  select id into owner2_id from public.users where email = 'qa.owner.localgym@gymind.test';
+  select id into owner3_id from public.users where email = 'qa.owner.sologym@gymind.test';
+  select id into staff_id from public.users where email = 'qa.staff.ablahmain@gymind.test';
+  select id into trainer_elie_id from public.users where email = 'qa.trainer.elie@gymind.test';
+  select id into trainer_marc_id from public.users where email = 'qa.trainer.marc@gymind.test';
+  select id into trainer_rana_id from public.users where email = 'qa.trainer.rana@gymind.test';
 
   update public.gyms set owner_user_id = owner1_id where id = gym1_id;
   update public.gyms set owner_user_id = owner2_id where id = gym2_id;
@@ -264,7 +264,7 @@ begin
   select m.id, 175, 76, 'QA demo member profile', now(), now()
   from public.members m
   join public.users u on u.id = m.user_id
-  where u.email like 'qa.member.%@forgehub.test'
+  where u.email like 'qa.member.%@gymind.test'
     and not exists (select 1 from public.member_profiles mp where mp.member_id = m.id);
 
   insert into public.membership_plans (gym_id, name, price, duration_month, access_type, includes_classes, includes_pt, is_active)
@@ -320,21 +320,21 @@ begin
       where existing.membership_plan_id = pb.plan_id and existing.branch_id = pb.branch_id
     );
 
-  select m.id into active_member_id from public.members m where m.email = 'qa.member.active.monthly@forgehub.test';
-  select m.id into daypass_member_id from public.members m where m.email = 'qa.member.daypass@forgehub.test';
-  select m.id into three_member_id from public.members m where m.email = 'qa.member.3months@forgehub.test';
-  select m.id into vip_member_id from public.members m where m.email = 'qa.member.vip@forgehub.test';
-  select m.id into expiring2_member_id from public.members m where m.email = 'qa.member.expiring2days@forgehub.test';
-  select m.id into expiring_tomorrow_member_id from public.members m where m.email = 'qa.member.expiringtomorrow@forgehub.test';
-  select m.id into expired_member_id from public.members m where m.email = 'qa.member.expired@forgehub.test';
-  select m.id into frozen_member_id from public.members m where m.email = 'qa.member.frozen@forgehub.test';
-  select m.id into cancelled_member_id from public.members m where m.email = 'qa.member.cancelled@forgehub.test';
-  select m.id into noplan_member_id from public.members m where m.email = 'qa.member.noplan@forgehub.test';
-  select m.id into history_member_id from public.members m where m.email = 'qa.member.history@forgehub.test';
-  select m.id into running_member_id from public.members m where m.email = 'qa.member.running@forgehub.test';
-  select m.id into vip_beirut_member_id from public.members m where m.email = 'qa.member.vip.beirut@forgehub.test';
-  select m.id into gym2_member_id from public.members m where m.email = 'qa.member.gym2.monthly@forgehub.test';
-  select m.id into gym3_member_id from public.members m where m.email = 'qa.member.gym3.solo@forgehub.test';
+  select m.id into active_member_id from public.members m where m.email = 'qa.member.active.monthly@gymind.test';
+  select m.id into daypass_member_id from public.members m where m.email = 'qa.member.daypass@gymind.test';
+  select m.id into three_member_id from public.members m where m.email = 'qa.member.3months@gymind.test';
+  select m.id into vip_member_id from public.members m where m.email = 'qa.member.vip@gymind.test';
+  select m.id into expiring2_member_id from public.members m where m.email = 'qa.member.expiring2days@gymind.test';
+  select m.id into expiring_tomorrow_member_id from public.members m where m.email = 'qa.member.expiringtomorrow@gymind.test';
+  select m.id into expired_member_id from public.members m where m.email = 'qa.member.expired@gymind.test';
+  select m.id into frozen_member_id from public.members m where m.email = 'qa.member.frozen@gymind.test';
+  select m.id into cancelled_member_id from public.members m where m.email = 'qa.member.cancelled@gymind.test';
+  select m.id into noplan_member_id from public.members m where m.email = 'qa.member.noplan@gymind.test';
+  select m.id into history_member_id from public.members m where m.email = 'qa.member.history@gymind.test';
+  select m.id into running_member_id from public.members m where m.email = 'qa.member.running@gymind.test';
+  select m.id into vip_beirut_member_id from public.members m where m.email = 'qa.member.vip.beirut@gymind.test';
+  select m.id into gym2_member_id from public.members m where m.email = 'qa.member.gym2.monthly@gymind.test';
+  select m.id into gym3_member_id from public.members m where m.email = 'qa.member.gym3.solo@gymind.test';
 
   insert into public.member_memberships (member_id, plan_id, start_date, end_date, status, freeze_days)
   select member_id, plan_id, start_date, end_date, status, freeze_days
@@ -427,13 +427,13 @@ begin
   insert into public.payments (gym_id, branch_id, member_id, membership_id, received_by_user_id, amount, method, paid_at, notes)
   select m.gym_id, m.home_branch_id, m.id, mm.id, staff_id, p.amount, p.method, now() - p.days_ago * interval '1 day', p.notes
   from (values
-    ('qa.member.daypass@forgehub.test', 5::numeric, 'QA Card - PAID', 1, 'QA paid one-day pass'),
-    ('qa.member.active.monthly@forgehub.test', 30::numeric, 'QA Card - PAID', 3, 'QA paid monthly'),
-    ('qa.member.3months@forgehub.test', 80::numeric, 'QA Card - PAID', 6, 'QA paid 3-month'),
-    ('qa.member.vip@forgehub.test', 120::numeric, 'QA Card - PAID', 2, 'QA paid VIP'),
-    ('qa.member.expiring2days@forgehub.test', 30::numeric, 'QA Card - PENDING', 1, 'QA pending payment'),
-    ('qa.member.expired@forgehub.test', 30::numeric, 'QA Card - FAILED', 20, 'QA failed payment'),
-    ('qa.member.cancelled@forgehub.test', 30::numeric, 'QA Card - REFUNDED', 5, 'QA refunded payment')
+    ('qa.member.daypass@gymind.test', 5::numeric, 'QA Card - PAID', 1, 'QA paid one-day pass'),
+    ('qa.member.active.monthly@gymind.test', 30::numeric, 'QA Card - PAID', 3, 'QA paid monthly'),
+    ('qa.member.3months@gymind.test', 80::numeric, 'QA Card - PAID', 6, 'QA paid 3-month'),
+    ('qa.member.vip@gymind.test', 120::numeric, 'QA Card - PAID', 2, 'QA paid VIP'),
+    ('qa.member.expiring2days@gymind.test', 30::numeric, 'QA Card - PENDING', 1, 'QA pending payment'),
+    ('qa.member.expired@gymind.test', 30::numeric, 'QA Card - FAILED', 20, 'QA failed payment'),
+    ('qa.member.cancelled@gymind.test', 30::numeric, 'QA Card - REFUNDED', 5, 'QA refunded payment')
   ) as p(email, amount, method, days_ago, notes)
   join public.members m on m.email = p.email
   left join lateral (
@@ -455,7 +455,7 @@ begin
     ('QA Membership expired', 'Your membership has expired. Renew to check in again.'),
     ('QA Upcoming class reminder', 'Your QA Strength Training class is coming up.'),
     ('QA Payment pending', 'You have a pending payment.'),
-    ('QA Gym announcement', 'Welcome to the ForgeHub QA demo dataset.'),
+    ('QA Gym announcement', 'Welcome to the Gymind QA demo dataset.'),
     ('QA VIP welcome', 'Welcome to VIP All Branches access.')
   ) as n(title, message)
   where not exists (select 1 from public.notifications existing where existing.title = n.title);
@@ -464,21 +464,21 @@ begin
   insert into public.notification_recipients (notification_id, user_id, is_read)
   select notification_id, u.id, false
   from public.users u
-  where u.email = 'qa.member.expiring2days@forgehub.test'
+  where u.email = 'qa.member.expiring2days@gymind.test'
     and not exists (select 1 from public.notification_recipients nr where nr.notification_id = notification_id and nr.user_id = u.id);
 
   select id into notification_id from public.notifications where title = 'QA Membership ends tomorrow';
   insert into public.notification_recipients (notification_id, user_id, is_read)
   select notification_id, u.id, false
   from public.users u
-  where u.email = 'qa.member.expiringtomorrow@forgehub.test'
+  where u.email = 'qa.member.expiringtomorrow@gymind.test'
     and not exists (select 1 from public.notification_recipients nr where nr.notification_id = notification_id and nr.user_id = u.id);
 
   select id into notification_id from public.notifications where title = 'QA VIP welcome';
   insert into public.notification_recipients (notification_id, user_id, is_read)
   select notification_id, u.id, false
   from public.users u
-  where u.email = 'qa.member.vip@forgehub.test'
+  where u.email = 'qa.member.vip@gymind.test'
     and not exists (select 1 from public.notification_recipients nr where nr.notification_id = notification_id and nr.user_id = u.id);
 end $$;
 
@@ -487,11 +487,11 @@ commit;
 -- Verification queries
 select count(*) as qa_users
 from public.users
-where email like 'qa.%@forgehub.test';
+where email like 'qa.%@gymind.test';
 
 select count(*) as qa_gyms
 from public.gyms
-where name in ('ForgeHub Ablah Fitness', 'ForgeHub Local Gym', 'ForgeHub Solo Gym');
+where name in ('Gymind Ablah Fitness', 'Gymind Local Gym', 'Gymind Solo Gym');
 
 select count(*) as qa_branches
 from public.branches
@@ -515,7 +515,7 @@ where access_type in (
 select count(*) as qa_members
 from public.members m
 join public.users u on u.id = m.user_id
-where u.email like 'qa.member.%@forgehub.test';
+where u.email like 'qa.member.%@gymind.test';
 
 select count(*) as qa_classes
 from public.classes
@@ -525,11 +525,11 @@ select count(*) as qa_open_sessions
 from public.check_ins ci
 join public.members m on m.id = ci.member_id
 join public.users u on u.id = m.user_id
-where u.email in ('qa.member.running@forgehub.test', 'qa.member.vip.beirut@forgehub.test')
+where u.email in ('qa.member.running@gymind.test', 'qa.member.vip.beirut@gymind.test')
   and ci.check_out_time is null;
 
 select u.email, r.name as role, u.full_name
 from public.users u
 join public.roles r on r.id = u.role_id
-where u.email like 'qa.%@forgehub.test'
+where u.email like 'qa.%@gymind.test'
 order by r.name, u.email;

@@ -1,8 +1,8 @@
 # QA Seeding
 
-The development seeder creates the QA/demo dataset automatically when `ForgeHub.API` starts in `Development` or when `SeedDatabase` is enabled.
+The development seeder creates the QA/demo dataset automatically when `Gymind.API` starts in `Development` or when `SeedDatabase` is enabled.
 
-Run from `ForgeHub.API`:
+Run from `Gymind.API`:
 
 ```powershell
 dotnet run
@@ -20,36 +20,36 @@ Test@123456
 
 | Role | Email | Password |
 |---|---|---|
-| SuperAdmin | qa.superadmin@forgehub.test | Test@123456 |
-| GymOwner | qa.owner.ablahfitness@forgehub.test | Test@123456 |
-| GymOwner | qa.owner.localgym@forgehub.test | Test@123456 |
-| GymOwner | qa.owner.sologym@forgehub.test | Test@123456 |
-| BranchManager | qa.manager.ablahmain@forgehub.test | Test@123456 |
-| Staff | qa.staff.ablahmain@forgehub.test | Test@123456 |
-| Trainer | qa.trainer.elie@forgehub.test | Test@123456 |
-| Trainer | qa.trainer.marc@forgehub.test | Test@123456 |
-| Trainer | qa.trainer.rana@forgehub.test | Test@123456 |
-| Member | qa.member.active.monthly@forgehub.test | Test@123456 |
-| Member | qa.member.daypass@forgehub.test | Test@123456 |
-| Member | qa.member.3months@forgehub.test | Test@123456 |
-| Member | qa.member.vip@forgehub.test | Test@123456 |
-| Member | qa.member.expiring2days@forgehub.test | Test@123456 |
-| Member | qa.member.expiringtomorrow@forgehub.test | Test@123456 |
-| Member | qa.member.expired@forgehub.test | Test@123456 |
-| Member | qa.member.frozen@forgehub.test | Test@123456 |
-| Member | qa.member.cancelled@forgehub.test | Test@123456 |
-| Member | qa.member.noplan@forgehub.test | Test@123456 |
-| Member | qa.member.history@forgehub.test | Test@123456 |
-| Member | qa.member.running@forgehub.test | Test@123456 |
-| Member | qa.member.vip.beirut@forgehub.test | Test@123456 |
-| Member | qa.member.gym2.monthly@forgehub.test | Test@123456 |
-| Member | qa.member.gym3.solo@forgehub.test | Test@123456 |
+| SuperAdmin | qa.superadmin@gymind.test | Test@123456 |
+| GymOwner | qa.owner.ablahfitness@gymind.test | Test@123456 |
+| GymOwner | qa.owner.localgym@gymind.test | Test@123456 |
+| GymOwner | qa.owner.sologym@gymind.test | Test@123456 |
+| BranchManager | qa.manager.ablahmain@gymind.test | Test@123456 |
+| Staff | qa.staff.ablahmain@gymind.test | Test@123456 |
+| Trainer | qa.trainer.elie@gymind.test | Test@123456 |
+| Trainer | qa.trainer.marc@gymind.test | Test@123456 |
+| Trainer | qa.trainer.rana@gymind.test | Test@123456 |
+| Member | qa.member.active.monthly@gymind.test | Test@123456 |
+| Member | qa.member.daypass@gymind.test | Test@123456 |
+| Member | qa.member.3months@gymind.test | Test@123456 |
+| Member | qa.member.vip@gymind.test | Test@123456 |
+| Member | qa.member.expiring2days@gymind.test | Test@123456 |
+| Member | qa.member.expiringtomorrow@gymind.test | Test@123456 |
+| Member | qa.member.expired@gymind.test | Test@123456 |
+| Member | qa.member.frozen@gymind.test | Test@123456 |
+| Member | qa.member.cancelled@gymind.test | Test@123456 |
+| Member | qa.member.noplan@gymind.test | Test@123456 |
+| Member | qa.member.history@gymind.test | Test@123456 |
+| Member | qa.member.running@gymind.test | Test@123456 |
+| Member | qa.member.vip.beirut@gymind.test | Test@123456 |
+| Member | qa.member.gym2.monthly@gymind.test | Test@123456 |
+| Member | qa.member.gym3.solo@gymind.test | Test@123456 |
 
 ## Gyms And Branches
 
-- ForgeHub Ablah Fitness: Ablah Main Branch, Ablah East Branch, Beirut Branch.
-- ForgeHub Local Gym: Ablah Strength Branch, Ablah Cardio Branch.
-- ForgeHub Solo Gym: Ablah Solo Branch.
+- Gymind Ablah Fitness: Ablah Main Branch, Ablah East Branch, Beirut Branch.
+- Gymind Local Gym: Ablah Strength Branch, Ablah Cardio Branch.
+- Gymind Solo Gym: Ablah Solo Branch.
 
 ## Plans
 
@@ -61,11 +61,11 @@ VIP plans are linked to every branch under their gym through `membership_plan_br
 
 ## Key Member Scenarios
 
-- `qa.member.running@forgehub.test` has an active check-in from about 35 minutes ago.
-- `qa.member.vip@forgehub.test` can test all-branch access under ForgeHub Ablah Fitness.
-- `qa.member.history@forgehub.test` has old expired memberships plus a current active membership.
-- `qa.member.expiring2days@forgehub.test` and `qa.member.expiringtomorrow@forgehub.test` test warning states.
-- `qa.member.expired@forgehub.test`, `qa.member.frozen@forgehub.test`, `qa.member.cancelled@forgehub.test`, and `qa.member.noplan@forgehub.test` test blocked or empty membership states.
+- `qa.member.running@gymind.test` has an active check-in from about 35 minutes ago.
+- `qa.member.vip@gymind.test` can test all-branch access under Gymind Ablah Fitness.
+- `qa.member.history@gymind.test` has old expired memberships plus a current active membership.
+- `qa.member.expiring2days@gymind.test` and `qa.member.expiringtomorrow@gymind.test` test warning states.
+- `qa.member.expired@gymind.test`, `qa.member.frozen@gymind.test`, `qa.member.cancelled@gymind.test`, and `qa.member.noplan@gymind.test` test blocked or empty membership states.
 
 ## Legacy Demo Accounts
 
@@ -73,9 +73,9 @@ The older demo seeder still creates:
 
 | Role | Email | Password |
 |---|---|---|
-| SuperAdmin | platform@forgehub.com | Forge123! |
-| GymOwner | owner@forgehub.com | Forge123! |
-| BranchManager | manager@forgehub.com | Forge123! |
-| Staff | staff@forgehub.com | Forge123! |
-| Trainer | trainer@forgehub.com | Forge123! |
-| Member | member1@forgehub.com | P@ssw0rd123! |
+| SuperAdmin | platform@gymind.com | Forge123! |
+| GymOwner | owner@gymind.com | Forge123! |
+| BranchManager | manager@gymind.com | Forge123! |
+| Staff | staff@gymind.com | Forge123! |
+| Trainer | trainer@gymind.com | Forge123! |
+| Member | member1@gymind.com | P@ssw0rd123! |

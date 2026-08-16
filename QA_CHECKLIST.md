@@ -1,4 +1,4 @@
-# ForgeHub Demo Day QA Checklist
+# Gymind Demo Day QA Checklist
 
 ## Auth
 - SuperAdmin can login at `POST /api/Auth/admin/login`.

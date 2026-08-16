@@ -7,7 +7,7 @@ Use this only on a local, development, or test Supabase database. Do not run it 
 1. Open your Supabase project.
 2. In the left sidebar, open **SQL Editor**.
 3. Open this local file:
-   `C:\Users\USER\OneDrive\Desktop\IN-448\ForgeHub\database\seeds\supabase_qa_seed.sql`
+   `C:\Users\USER\OneDrive\Desktop\IN-448\Gymind\database\seeds\supabase_qa_seed.sql`
 4. Copy the full SQL content.
 5. Paste it into Supabase SQL Editor.
 6. Click **Run**.
@@ -27,34 +27,34 @@ The SQL inserts a valid BCrypt hash into `users.password_hash`.
 
 | Email | Password | Role | Scenario |
 |---|---|---|---|
-| qa.superadmin@forgehub.test | Test@123456 | SuperAdmin | Platform admin |
-| qa.owner.ablahfitness@forgehub.test | Test@123456 | GymOwner | ForgeHub Ablah Fitness owner |
-| qa.owner.localgym@forgehub.test | Test@123456 | GymOwner | ForgeHub Local Gym owner |
-| qa.owner.sologym@forgehub.test | Test@123456 | GymOwner | ForgeHub Solo Gym owner |
-| qa.manager.ablahmain@forgehub.test | Test@123456 | BranchManager | Ablah Main manager |
-| qa.staff.ablahmain@forgehub.test | Test@123456 | Staff | Ablah Main staff |
-| qa.trainer.elie@forgehub.test | Test@123456 | Trainer | Elie Haddad |
-| qa.trainer.marc@forgehub.test | Test@123456 | Trainer | Marc Khoury |
-| qa.trainer.rana@forgehub.test | Test@123456 | Trainer | Rana Nader |
-| qa.member.active.monthly@forgehub.test | Test@123456 | Member | Active monthly membership |
-| qa.member.daypass@forgehub.test | Test@123456 | Member | Active same-day pass |
-| qa.member.3months@forgehub.test | Test@123456 | Member | Active 3-month membership |
-| qa.member.vip@forgehub.test | Test@123456 | Member | VIP all Gym 1 branches |
-| qa.member.expiring2days@forgehub.test | Test@123456 | Member | Ends in 2 days |
-| qa.member.expiringtomorrow@forgehub.test | Test@123456 | Member | Ends tomorrow |
-| qa.member.expired@forgehub.test | Test@123456 | Member | Expired membership |
-| qa.member.frozen@forgehub.test | Test@123456 | Member | Frozen membership |
-| qa.member.cancelled@forgehub.test | Test@123456 | Member | Cancelled membership |
-| qa.member.noplan@forgehub.test | Test@123456 | Member | No membership |
-| qa.member.history@forgehub.test | Test@123456 | Member | Expired history plus current active |
-| qa.member.running@forgehub.test | Test@123456 | Member | Active session timer |
-| qa.member.vip.beirut@forgehub.test | Test@123456 | Member | VIP Beirut branch |
-| qa.member.gym2.monthly@forgehub.test | Test@123456 | Member | Gym 2 member |
-| qa.member.gym3.solo@forgehub.test | Test@123456 | Member | Gym 3 member |
+| qa.superadmin@gymind.test | Test@123456 | SuperAdmin | Platform admin |
+| qa.owner.ablahfitness@gymind.test | Test@123456 | GymOwner | Gymind Ablah Fitness owner |
+| qa.owner.localgym@gymind.test | Test@123456 | GymOwner | Gymind Local Gym owner |
+| qa.owner.sologym@gymind.test | Test@123456 | GymOwner | Gymind Solo Gym owner |
+| qa.manager.ablahmain@gymind.test | Test@123456 | BranchManager | Ablah Main manager |
+| qa.staff.ablahmain@gymind.test | Test@123456 | Staff | Ablah Main staff |
+| qa.trainer.elie@gymind.test | Test@123456 | Trainer | Elie Haddad |
+| qa.trainer.marc@gymind.test | Test@123456 | Trainer | Marc Khoury |
+| qa.trainer.rana@gymind.test | Test@123456 | Trainer | Rana Nader |
+| qa.member.active.monthly@gymind.test | Test@123456 | Member | Active monthly membership |
+| qa.member.daypass@gymind.test | Test@123456 | Member | Active same-day pass |
+| qa.member.3months@gymind.test | Test@123456 | Member | Active 3-month membership |
+| qa.member.vip@gymind.test | Test@123456 | Member | VIP all Gym 1 branches |
+| qa.member.expiring2days@gymind.test | Test@123456 | Member | Ends in 2 days |
+| qa.member.expiringtomorrow@gymind.test | Test@123456 | Member | Ends tomorrow |
+| qa.member.expired@gymind.test | Test@123456 | Member | Expired membership |
+| qa.member.frozen@gymind.test | Test@123456 | Member | Frozen membership |
+| qa.member.cancelled@gymind.test | Test@123456 | Member | Cancelled membership |
+| qa.member.noplan@gymind.test | Test@123456 | Member | No membership |
+| qa.member.history@gymind.test | Test@123456 | Member | Expired history plus current active |
+| qa.member.running@gymind.test | Test@123456 | Member | Active session timer |
+| qa.member.vip.beirut@gymind.test | Test@123456 | Member | VIP Beirut branch |
+| qa.member.gym2.monthly@gymind.test | Test@123456 | Member | Gym 2 member |
+| qa.member.gym3.solo@gymind.test | Test@123456 | Member | Gym 3 member |
 
 ## What Gets Created
 
-- Gyms: ForgeHub Ablah Fitness, ForgeHub Local Gym, ForgeHub Solo Gym.
+- Gyms: Gymind Ablah Fitness, Gymind Local Gym, Gymind Solo Gym.
 - Branches: Ablah Main, Ablah East, Beirut, Ablah Strength, Ablah Cardio, Ablah Solo.
 - Plans: day pass, monthly, 3-month, VIP, student, freeze allowed, Gym 2, and Gym 3 plans.
 - Members and memberships for active, expiring, expired, frozen, cancelled, no-plan, history, VIP, and running timer scenarios.
