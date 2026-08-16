@@ -10,9 +10,9 @@
             "request": "launch",
             "preLaunchTask": "build",
             // If you have changed target frameworks, make sure to update the program path.
-            "program": "${workspaceFolder}/ForgeHub.API/bin/Debug/net8.0/ForgeHub.API.dll",
+            "program": "${workspaceFolder}/Gymind.API/bin/Debug/net8.0/Gymind.API.dll",
             "args": [],
-            "cwd": "${workspaceFolder}/ForgeHub.API",
+            "cwd": "${workspaceFolder}/Gymind.API",
             "stopAtEntry": false,
             // Enable launching a web browser when ASP.NET Core starts. For more information: https://aka.ms/VSCode-CS-LaunchJson-WebBrowser
             "serverReadyAction": {

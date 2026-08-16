@@ -1,4 +1,4 @@
-# ForgeHub Development Database Checklist
+# Gymind Development Database Checklist
 
 Run these checks against Supabase PostgreSQL before QA. They verify the schema needed for QR attendance, geofence validation, class bookings, and active check-in state.
 
